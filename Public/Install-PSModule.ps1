@@ -1,4 +1,4 @@
-function Add-PSModule {
+function Install-PSModule {
     [CmdletBinding()]
     param (
         [String[]]$ModuleName,

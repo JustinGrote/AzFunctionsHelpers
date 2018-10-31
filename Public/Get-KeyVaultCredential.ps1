@@ -27,7 +27,7 @@ System.Management.Automation.PSCredential
     $endpoint = $env:MSI_ENDPOINT
     $secret = $env:MSI_SECRET
 
-    if $PSCmdlet.ParameterSetName -eq 'Components' {
+    if ($PSCmdlet.ParameterSetName -eq 'Components') {
         [URI]$Identifier = "https://$KeyVaultName.vault.azure.net/$KeyType`s/$KeyName"
     }
 
