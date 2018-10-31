@@ -63,7 +63,7 @@ Get-AzFunctionsKeyVaultCredential.ps1 -KeyVaultName MYKEYVAULTNAME -KeyName MYSE
 
     #Safely store the credresult securely in memory
     $credValue = New-Object SecureString
-    (Invoke-RestMethod @credRequestParams).value.tochararray() | foreach {$credValue.appendchar($PSItem)}
+    (Invoke-RestMethod @credRequestParams).value.tochararray() | ForEach-Object {$credValue.appendchar($PSItem)}
 
     #Extract the credential name from the identifier
     $credName = ([uri]$Identifier).segments[2] -replace '/',''
