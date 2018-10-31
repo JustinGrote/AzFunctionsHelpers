@@ -1,0 +1,40 @@
+# See http://www.appveyor.com/docs/appveyor-yml for many more options
+version: '{build}-{branch}'
+
+image:
+  - Visual Studio 2017
+install:
+  - ps: Install-Module -Name InvokeBuild,BuildHelpers,PSScriptAnalyzer,Plaster -Confirm:$false -Force
+
+#Encrypted Variables - https://ci.appveyor.com/tools/encrypt
+environment:
+  GitHubUserName: JustinGrote
+  GitHubAPIKey:
+    secure: MolSn4T0aNBnph/BVkKA8HQ1qvpJjIV3CcjRg3DYynijlOVL5RftqbXD5l0IUw6L
+  NuGetAPIKey:
+    secure: HncD30pn+cWRepdP28pyB1l4BNg3x3MdvcNV8EysOhQ5kBFMHVyXiQM0whuUW78P
+
+# Skip on updates to the readme.
+# We can force this by adding [skip ci] or [ci skip] anywhere in commit message
+skip_commits:
+  message: /updated README.*|Update README.*s/
+
+# Skip Tags with GitHub
+# Releases are tracked and tagged by the build script in Appveyor, having this enabled results in a double build
+skip_tags: true
+
+#Kick off the CI/CD pipeline. We do test and build in the same script
+#To be portable to non-Appveyor builds
+build_script:
+  #If Debugging, take a look prior to the Build
+  - ps: if ($env:APPVEYOR_REPO_COMMIT_MESSAGE -match 'AppveyorRDPDebug') {$blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))}
+  - ps: Invoke-Build
+
+deploy_script:
+  #If Debugging, take a look prior to the publish
+  - ps: if ($env:APPVEYOR_REPO_COMMIT_MESSAGE -match 'AppveyorRDPDebug') {$blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))}
+  - ps: Invoke-Build Publish
+
+on_finish:
+  #Final Checkpoint before bailing out
+  - ps: if ($env:APPVEYOR_REPO_COMMIT_MESSAGE -match 'AppveyorRDPDebug') {$blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))}
