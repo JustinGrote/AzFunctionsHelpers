@@ -11,6 +11,9 @@
 # Script module or binary module file associated with this manifest.
 RootModule = 'AzFunctionsHelpers.psm1'
 
+# Default Prefix for the Module
+DefaultCommandPrefix = 'AzFunction'
+
 # Version number of this module.
 ModuleVersion = '0.0.0'
 
