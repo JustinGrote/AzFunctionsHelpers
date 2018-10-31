@@ -3,13 +3,13 @@ function Get-KeyVaultCredential {
 <#
 .SYNOPSIS
 Fetches Azure Key Vault credentials using a managed service identity with a more lightweight approach than the Az powershell module
-.EXAMPLE
-.\Get-AzFunctionsKeyVaultCredential.ps1 -Identifier https://MYKEYVAULTNAME.vault.azure.net/secrets/MYSECRETNAME
-.EXAMPLE
-.\Get-AzFunctionsKeyVaultCredential.ps1 -KeyVaultName MYKEYVAULTNAME -KeyNme MYSECRET
-
-.OUTPUT
+.OUTPUTS
 System.Management.Automation.PSCredential
+.EXAMPLE
+Get-AzFunctionsKeyVaultCredential.ps1 -Identifier https://MYKEYVAULTNAME.vault.azure.net/secrets/MYSECRETNAME
+Retreive a secret from MYKEYV
+.EXAMPLE
+Get-AzFunctionsKeyVaultCredential.ps1 -KeyVaultName MYKEYVAULTNAME -KeyName MYSECRET
 #>
 
     [CmdletBinding(DefaultParameterSetName='Identifier')]
