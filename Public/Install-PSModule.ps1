@@ -1,4 +1,10 @@
 function Install-PSModule {
+<#
+.SYNOPSIS
+Fetches a Powershell module using PackageManagement. Default is a server-local Modules folder.
+.NOTES
+Uses Save-Module because Install-Module doesn't work in Azure Functions due to a permissions issue (investigating)
+#>
 
 [CmdletBinding()]
 param (
@@ -10,10 +16,7 @@ if (-not (Test-Path $PSLocalModulePath)) {
     mkdir $PSLocalModulePath > $null
 }
 
-if ($env:psmodulepath -notmatch [Regex]::Escape($PSLocalModulePath)) {
-    write-verbose "Adding $PSLocalModulePath to Powershell Module Path"
-    $env:psmodulepath = $PSLocalModulePath + ';' + $env:psmodulepath
-}
+Add-PSModulePath $PSLocalModulePath
 
 #Silently Installs the NuGET requirement for Powershell Gallery if it isn't present.
 get-packageprovider Nuget -forcebootstrap > $null
